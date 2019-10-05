@@ -47,6 +47,20 @@ class ONVIFCameraControl:
                     pass
             return wrapped
 
+    def get_stream_uri(self, protocol='UDP', stream='RTP-Unicast'):
+        """
+        WARNING!!!
+        Some cameras return invalid stream uri
+
+        RTP unicast over UDP: StreamType = "RTP_unicast", TransportProtocol = "UDP"
+        RTP over RTSP over HTTP over TCP: StreamType = "RTP_unicast", TransportProtocol = "HTTP"
+        RTP over RTSP over TCP: StreamType = "RTP_unicast", TransportProtocol = "RTSP"
+        """
+        request = self.media_service.create_type('GetStreamUri')
+        request.ProfileToken = self.profile.token
+        request.StreamSetup = {'Stream': stream, 'Transport': {'Protocol': protocol}}
+        return self.media_service.GetStreamUri(request)
+
     @__ignore_exception
     def set_brightness(self, brightness=50):
         """
@@ -289,8 +303,4 @@ class ONVIFCameraControl:
         request.VideoSourceToken = self.video_source.token
         return self.imaging_service.GetImagingSettings(request)
 
-    def get_stream_uri(self, protocol='RTSP', stream='RTP-Unicast'):
-        request = self.media_service.create_type('GetStreamUri')
-        request.ProfileToken = self.profile.token
-        request.StreamSetup = {'Stream': stream, 'Transport': {'Protocol': protocol}}
-        return self.media_service.GetStreamUri(request)
+
