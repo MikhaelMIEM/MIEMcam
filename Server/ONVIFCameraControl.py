@@ -49,6 +49,10 @@ class ONVIFCameraControl:
 
     def get_stream_uri(self, protocol='UDP', stream='RTP-Unicast'):
         """
+        :param protocol
+            string 'UDP', 'TCP', 'RTSP', 'HTTP'
+        :param stream
+             string either 'RTP-Unicast' or 'RTP-Multicast'
         WARNING!!!
         Some cameras return invalid stream uri
 
@@ -56,6 +60,7 @@ class ONVIFCameraControl:
         RTP over RTSP over HTTP over TCP: StreamType = "RTP_unicast", TransportProtocol = "HTTP"
         RTP over RTSP over TCP: StreamType = "RTP_unicast", TransportProtocol = "RTSP"
         """
+        logger.info(f'Getting stream uri {protocol} {stream}')
         request = self.media_service.create_type('GetStreamUri')
         request.ProfileToken = self.profile.token
         request.StreamSetup = {'Stream': stream, 'Transport': {'Protocol': protocol}}
