@@ -30,13 +30,10 @@ class ONVIFCameraControl:
 
         self.profile = self.media_service.GetProfiles()[0]
         self.video_source = self.__get_video_sources()[0]
-        self.configurations = self.__get_configurations()
-        self.configuration_options = self.__get_ptz_conf_opts()
+
         self.status = self.ptz_service.GetStatus({'ProfileToken': self.profile.token})
-        self.node = self.__get_node(self.configurations.NodeToken)
         self.move_options = self.__get_move_options()
 
-        self.request_move = self.__empty_request_move_fix()
         logging.info(f'Initialized camera at {addr} successfully')
 
     def __ignore_exception(func):
@@ -185,7 +182,7 @@ class ONVIFCameraControl:
         request = self.ptz_service.create_type('GotoPreset')
         request.ProfileToken = self.profile.token
         request.PresetToken = preset_token
-        request.Speed = self.status.Position
+        request.Speed = deepcopy(self.status.Position)
         vel = request.Speed
         vel.PanTilt.x, vel.PanTilt.y = ptz_velocity.x, ptz_velocity.y
         vel.Zoom.x = ptz_velocity.z
@@ -203,7 +200,8 @@ class ONVIFCameraControl:
         """
         logger.info(f'Continuous move {ptz_velocity} {"" if timeout is None else " for " + str(timeout)}')
         ptz_velocity = vector3(*ptz_velocity)
-        req = self.request_move
+        req = self.ptz_service.create_type('ContinuousMove')
+        req.Velocity = deepcopy(self.status.Position)
         req.ProfileToken = self.profile.token
         vel = req.Velocity
         vel.PanTilt.x, vel.PanTilt.y = ptz_velocity.x, ptz_velocity.y
@@ -259,14 +257,6 @@ class ONVIFCameraControl:
         request = self.imaging_service.create_type('GetMoveOptions')
         request.VideoSourceToken = self.video_source.token
         return self.imaging_service.GetMoveOptions(request)
-
-    def __empty_request_move_fix(self):
-        """
-        self.request['ContinuousMove'] initializing with no Velocity attribute :)
-        """
-        req = self.ptz_service.create_type('ContinuousMove')
-        req.Velocity = deepcopy(self.status.Position)
-        return req
 
     def __get_options(self):
         logger.debug(f'Getting options')
