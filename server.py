@@ -1,5 +1,5 @@
 from flask import Flask, request
-from Server.ONVIFCameraControl import ONVIFCameraControl as OCC
+from ONVIFCameraControl import ONVIFCameraControl as OCC
 
 app = Flask(__name__)
 cam = OCC(("172.18.200.56", 80), "admin", "Supervisor", "wsdl")

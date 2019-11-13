@@ -4,8 +4,8 @@ logger = logging.getLogger(__name__)
 import zeep
 from onvif import ONVIFCamera
 from copy import deepcopy
-from Server.vector3 import vector3
-from Server import common
+from vector3 import vector3
+import common
 from datetime import timedelta
 
 

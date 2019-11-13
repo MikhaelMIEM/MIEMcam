@@ -33,7 +33,7 @@ This document and the information contained herein is provided on an "AS IS" bas
      <xsd:schema>
        <xsd:import
          namespace="http://docs.oasis-open.org/wsn/b-2" 
-         schemaLocation="./b-2.xsd"/>
+         schemaLocation="b-2.xsd"/>
      </xsd:schema>
    </wsdl:types>
 
