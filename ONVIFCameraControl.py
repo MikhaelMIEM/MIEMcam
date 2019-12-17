@@ -53,7 +53,7 @@ class ONVIFCameraControl:
         WARNING!!!
         Some cameras return invalid stream uri
 
-        RTP unicast over UDP: StreamType = "RTP_unicast", TransportProtocol = "UDP"
+        RTP unicast over UDP: StreamType = "RTP_getgetgetgetunicast", TransportProtocol = "UDP"
         RTP over RTSP over HTTP over TCP: StreamType = "RTP_unicast", TransportProtocol = "HTTP"
         RTP over RTSP over TCP: StreamType = "RTP_unicast", TransportProtocol = "RTSP"
         """
@@ -192,6 +192,26 @@ class ONVIFCameraControl:
         logger.debug(f'Getting presets')
         return self.ptz_service.GetPresets(self.profile.token)
 
+    def get_brightness(self):
+        logger.info(f'Getting brightness')
+        imaging_settings = self.__get_imaging_settings()
+        return imaging_settings.Brightness
+
+    def get_color_saturation(self):
+        logger.info(f'Getting color_saturation')
+        imaging_settings = self.__get_imaging_settings()
+        return imaging_settings.ColorSaturation
+
+    def get_contrast(self):
+        logger.info(f'Getting contrast')
+        imaging_settings = self.__get_imaging_settings()
+        return imaging_settings.Contrast
+
+    def get_sharpness(self):
+        logger.info(f'Getting sharpness')
+        imaging_settings = self.__get_imaging_settings()
+        return imaging_settings.Sharpness
+
     def move_continuous(self, ptz_velocity, timeout=None):
         """
         :param ptz_velocity:
@@ -294,7 +314,7 @@ class ONVIFCameraControl:
         return self.imaging_service.SetImagingSettings(request)
 
     def __get_imaging_settings(self):
-        request = self.im1aging_service.create_type('GetImagingSettings')
+        request = self.imaging_service.create_type('GetImagingSettings')
         request.VideoSourceToken = self.video_source.token
         return self.imaging_service.GetImagingSettings(request)
 
