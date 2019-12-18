@@ -27,6 +27,11 @@ class RtspProxiesPool:
         self._proxies[uid].run()
         logger.info(f"Stream available at rtsp://0.0.0.0:{port}/{uid}")
 
+    def stop_proxy(self, uid):
+        self._proxies[uid].kill()
+        port = self._proxies[uid].get_port()
+        logger.info(f"Stream at rtsp://0.0.0.0:{port}/{uid} has stopped")
+
     def get_port(self, uid):
         """
         Cam avaliable at rtsp://server_ip:this_function_returned_port/camera_uid
