@@ -1,8 +1,4 @@
-from ONVIFCameraControl import ONVIFCameraControl as OCC
 from RtspProxiesPool import RtspProxiesPool
-from time import sleep
-import keyboard
-import cv2
 
 cams = [
     {
@@ -42,34 +38,3 @@ if __name__ == '__main__':
 
     print('Press enter to end proxying')
     input()
-
-    # to watch stream type in command line 'vlc rtsp://camera_ip'
-    # cam = OCC(("172.18.200.53", 80), "admin", "Supervisor", "wsdl")
-    # cam = OCC(("192.168.15.42", 80), "admin", "Supervisor", "wsdl")
-    # cam = OCC(("172.18.199.41", 8899), "admin", "Supervisor", "wsdl")
-
-    # while True:
-    #     key = keyboard.read_key()
-    #     if key == 'j':
-    #         print("down")
-    #         cam.move_continuous((0, -1, 0))
-    #         sleep(1)
-    #         cam.stop()
-    #
-    #     if key == "k":
-    #         print("up")
-    #         cam.move_continuous((0, 1, 0))
-    #         sleep(1)
-    #         cam.stop()
-    #
-    #     if key == "l":
-    #         print("right")
-    #         cam.move_continuous((1, 0, 0))
-    #         sleep(1)
-    #         cam.stop()
-    #
-    #     if key == "h":
-    #         print("left")
-    #         cam.move_continuous((-1, 0, 0))
-    #         sleep(1)
-    #         cam.stop()
